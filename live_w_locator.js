@@ -354,9 +354,21 @@ $(function() {
       $node = $(
         '<li><div class="thumbnail"><div class="imgWrapper"><img /></div><div class="caption"><h4 class="code"></h4></div></div></li>'
       );
-      $node.find('img').attr('src', canvas.toDataURL());
       var productName = '';
-      if (code === 'WXY-wsu-8910') productName = 'Cheerios, 19.3oz';
+      var imgSrc = canvas.toDataURL();
+      if (code === 'WXY-wsu-8910') {
+        productName = 'Cheerios, 19.3oz';
+        imgSrc = 'https://m.wic.ca.gov/images/BreakfastCereal/CheeriosLogo.png';
+      } else if (code === 'DEF-def-4567') {
+        productName = 'Gerber, 4oz';
+        imgSrc =
+          'https://m.wic.ca.gov/images/InfantFruitsVegetables/GerberLogo.png';
+      } else if (code === 'ABC-abc-1234') {
+        productName = 'Enfamil Gentlease, 12.4oz';
+        imgSrc =
+          'https://m.wic.ca.gov/images/InfantFormula/EnfamilGentlease.png';
+      }
+      $node.find('img').attr('src', imgSrc);
       $node.find('h4.code').html(code + ' ' + productName);
       $('#result_strip ul.thumbnails').prepend($node);
     }
