@@ -4,28 +4,28 @@ $(function() {
     capacity: 20,
     blacklist: [
       {
-        code: "WIWV8ETQZ1",
-        format: "code_93"
+        code: 'WIWV8ETQZ1',
+        format: 'code_93'
       },
       {
-        code: "EH3C-%GU23RK3",
-        format: "code_93"
+        code: 'EH3C-%GU23RK3',
+        format: 'code_93'
       },
       {
-        code: "O308SIHQOXN5SA/PJ",
-        format: "code_93"
+        code: 'O308SIHQOXN5SA/PJ',
+        format: 'code_93'
       },
       {
-        code: "DG7Q$TV8JQ/EN",
-        format: "code_93"
+        code: 'DG7Q$TV8JQ/EN',
+        format: 'code_93'
       },
       {
-        code: "VOFD1DB5A.1F6QU",
-        format: "code_93"
+        code: 'VOFD1DB5A.1F6QU',
+        format: 'code_93'
       },
       {
-        code: "4SO64P4X8 U4YUU1T-",
-        format: "code_93"
+        code: '4SO64P4X8 U4YUU1T-',
+        format: 'code_93'
       }
     ],
     filter: function(codeResult) {
@@ -54,14 +54,14 @@ $(function() {
     checkCapabilities: function() {
       var track = Quagga.CameraAccess.getActiveTrack();
       var capabilities = {};
-      if (typeof track.getCapabilities === "function") {
+      if (typeof track.getCapabilities === 'function') {
         capabilities = track.getCapabilities();
       }
-      this.applySettingsVisibility("zoom", capabilities.zoom);
-      this.applySettingsVisibility("torch", capabilities.torch);
+      this.applySettingsVisibility('zoom', capabilities.zoom);
+      this.applySettingsVisibility('torch', capabilities.torch);
     },
     updateOptionsForMediaRange: function(node, range) {
-      console.log("updateOptionsForMediaRange", node, range);
+      console.log('updateOptionsForMediaRange', node, range);
       var NUM_STEPS = 6;
       var stepSize = (range.max - range.min) / NUM_STEPS;
       var option;
@@ -71,7 +71,7 @@ $(function() {
       }
       for (var i = 0; i <= NUM_STEPS; i++) {
         value = range.min + stepSize * i;
-        option = document.createElement("option");
+        option = document.createElement('option');
         option.value = value;
         option.innerHTML = value;
         node.appendChild(option);
@@ -79,12 +79,12 @@ $(function() {
     },
     applySettingsVisibility: function(setting, capability) {
       // depending on type of capability
-      if (typeof capability === "boolean") {
+      if (typeof capability === 'boolean') {
         var node = document.querySelector(
           'input[name="settings_' + setting + '"]'
         );
         if (node) {
-          node.parentNode.style.display = capability ? "block" : "none";
+          node.parentNode.style.display = capability ? 'block' : 'none';
         }
         return;
       }
@@ -97,7 +97,7 @@ $(function() {
         );
         if (node) {
           this.updateOptionsForMediaRange(node, capability);
-          node.parentNode.style.display = "block";
+          node.parentNode.style.display = 'block';
         }
         return;
       }
@@ -111,12 +111,12 @@ $(function() {
         function pruneText(text) {
           return text.length > 30 ? text.substr(0, 30) : text;
         }
-        var $deviceSelection = document.getElementById("deviceSelection");
+        var $deviceSelection = document.getElementById('deviceSelection');
         while ($deviceSelection.firstChild) {
           $deviceSelection.removeChild($deviceSelection.firstChild);
         }
         devices.forEach(function(device) {
-          var $option = document.createElement("option");
+          var $option = document.createElement('option');
           $option.value = device.deviceId || device.id;
           $option.appendChild(
             document.createTextNode(
@@ -132,63 +132,54 @@ $(function() {
       var self = this;
 
       self.initCameraSelection();
-      $(".controls").on("click", "button.stop", function(e) {
+      $('.controls').on('click', 'button.stop', function(e) {
         e.preventDefault();
         Quagga.stop();
         self._printCollectedResults();
       });
 
-      $(".controls .reader-config-group").on(
-        "change",
-        "input, select",
+      $('.controls .reader-config-group').on(
+        'change',
+        'input, select',
         function(e) {
           e.preventDefault();
           var $target = $(e.target),
             value =
-              $target.attr("type") === "checkbox"
-                ? $target.prop("checked")
+              $target.attr('type') === 'checkbox'
+                ? $target.prop('checked')
                 : $target.val(),
-            name = $target.attr("name"),
+            name = $target.attr('name'),
             state = self._convertNameToState(name);
 
-          console.log("Value of " + state + " changed to " + value);
+          console.log('Value of ' + state + ' changed to ' + value);
           self.setState(state, value);
         }
       );
     },
     _printCollectedResults: function() {
       var results = resultCollector.getResults(),
-        $ul = $("#result_strip ul.collector");
+        $ul = $('#result_strip ul.collector');
 
       results.forEach(function(result) {
         var $li = $(
           '<li><div class="thumbnail"><div class="imgWrapper"><img /></div><div class="caption"><h4 class="code"></h4></div></div></li>'
         );
 
-        $li.find("img").attr("src", result.frame);
-        var productName = "";
-        if (result.codeResult.format === "WXY-wsu-8910")
-          productName = "Cheerios, 19.3oz";
+        $li.find('img').attr('src', result.frame);
         $li
-          .find("h4.code")
-          .html(
-            result.codeResult.code +
-              " (" +
-              result.codeResult.format +
-              ") " +
-              productName
-          );
+          .find('h4.code')
+          .html(result.codeResult.code + ' (' + result.codeResult.format + ')');
         $ul.prepend($li);
       });
     },
     _accessByPath: function(obj, path, val) {
-      var parts = path.split("."),
+      var parts = path.split('.'),
         depth = parts.length,
-        setter = typeof val !== "undefined" ? true : false;
+        setter = typeof val !== 'undefined' ? true : false;
 
       return parts.reduce(function(o, key, i) {
         if (setter && i + 1 === depth) {
-          if (typeof o[key] === "object" && typeof val === "object") {
+          if (typeof o[key] === 'object' && typeof val === 'object') {
             Object.assign(o[key], val);
           } else {
             o[key] = val;
@@ -199,25 +190,25 @@ $(function() {
     },
     _convertNameToState: function(name) {
       return name
-        .replace("_", ".")
-        .split("-")
+        .replace('_', '.')
+        .split('-')
         .reduce(function(result, value) {
           return result + value.charAt(0).toUpperCase() + value.substring(1);
         });
     },
     detachListeners: function() {
-      $(".controls").off("click", "button.stop");
-      $(".controls .reader-config-group").off("change", "input, select");
+      $('.controls').off('click', 'button.stop');
+      $('.controls .reader-config-group').off('change', 'input, select');
     },
     applySetting: function(setting, value) {
       var track = Quagga.CameraAccess.getActiveTrack();
-      if (track && typeof track.getCapabilities === "function") {
+      if (track && typeof track.getCapabilities === 'function') {
         switch (setting) {
-          case "zoom":
+          case 'zoom':
             return track.applyConstraints({
               advanced: [{ zoom: parseFloat(value) }]
             });
-          case "torch":
+          case 'torch':
             return track.applyConstraints({ advanced: [{ torch: !!value }] });
         }
       }
@@ -225,11 +216,11 @@ $(function() {
     setState: function(path, value) {
       var self = this;
 
-      if (typeof self._accessByPath(self.inputMapper, path) === "function") {
+      if (typeof self._accessByPath(self.inputMapper, path) === 'function') {
         value = self._accessByPath(self.inputMapper, path)(value);
       }
 
-      if (path.startsWith("settings.")) {
+      if (path.startsWith('settings.')) {
         var setting = path.substring(9);
         return self.applySetting(setting, value);
       }
@@ -244,7 +235,7 @@ $(function() {
       inputStream: {
         constraints: function(value) {
           if (/^(\d+)x(\d+)$/.test(value)) {
-            var values = value.split("x");
+            var values = value.split('x');
             return {
               width: { min: parseInt(values[0]) },
               height: { min: parseInt(values[1]) }
@@ -260,19 +251,19 @@ $(function() {
       },
       decoder: {
         readers: function(value) {
-          if (value === "ean_extended") {
+          if (value === 'ean_extended') {
             return [
               {
-                format: "ean_reader",
+                format: 'ean_reader',
                 config: {
-                  supplements: ["ean_5_reader", "ean_2_reader"]
+                  supplements: ['ean_5_reader', 'ean_2_reader']
                 }
               }
             ];
           }
           return [
             {
-              format: value + "_reader",
+              format: value + '_reader',
               config: {}
             }
           ];
@@ -281,16 +272,16 @@ $(function() {
     },
     state: {
       inputStream: {
-        type: "LiveStream",
+        type: 'LiveStream',
         constraints: {
           width: { min: 640 },
           height: { min: 480 },
-          facingMode: "environment",
+          facingMode: 'environment',
           aspectRatio: { min: 1, max: 2 }
         }
       },
       locator: {
-        patchSize: "medium",
+        patchSize: 'medium',
         halfSample: true
       },
       numOfWorkers: 2,
@@ -298,7 +289,7 @@ $(function() {
       decoder: {
         readers: [
           {
-            format: "code_128_reader",
+            format: 'code_128_reader',
             config: {}
           }
         ]
@@ -319,8 +310,8 @@ $(function() {
         drawingCtx.clearRect(
           0,
           0,
-          parseInt(drawingCanvas.getAttribute("width")),
-          parseInt(drawingCanvas.getAttribute("height"))
+          parseInt(drawingCanvas.getAttribute('width')),
+          parseInt(drawingCanvas.getAttribute('height'))
         );
         result.boxes
           .filter(function(box) {
@@ -328,7 +319,7 @@ $(function() {
           })
           .forEach(function(box) {
             Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
-              color: "green",
+              color: 'green',
               lineWidth: 2
             });
           });
@@ -336,7 +327,7 @@ $(function() {
 
       if (result.box) {
         Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
-          color: "#00F",
+          color: '#00F',
           lineWidth: 2
         });
       }
@@ -344,9 +335,9 @@ $(function() {
       if (result.codeResult && result.codeResult.code) {
         Quagga.ImageDebug.drawPath(
           result.line,
-          { x: "x", y: "y" },
+          { x: 'x', y: 'y' },
           drawingCtx,
-          { color: "red", lineWidth: 3 }
+          { color: 'red', lineWidth: 3 }
         );
       }
     }
@@ -363,9 +354,12 @@ $(function() {
       $node = $(
         '<li><div class="thumbnail"><div class="imgWrapper"><img /></div><div class="caption"><h4 class="code"></h4></div></div></li>'
       );
-      $node.find("img").attr("src", canvas.toDataURL());
-      $node.find("h4.code").html(code);
-      $("#result_strip ul.thumbnails").prepend($node);
+      $node.find('img').attr('src', canvas.toDataURL());
+      var productName = '';
+      if (result.codeResult.format === 'WXY-wsu-8910')
+        productName = 'Cheerios, 19.3oz';
+      $node.find('h4.code').html(code + ' ' + productName);
+      $('#result_strip ul.thumbnails').prepend($node);
     }
   });
 });
