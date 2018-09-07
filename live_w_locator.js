@@ -172,11 +172,11 @@ $(function() {
         $li
           .find("h4.code")
           .html(
-            result.codeResult.code +
+            productName +
+              result.codeResult.code +
               " (" +
               result.codeResult.format +
-              ") " +
-              productName
+              ") "
           );
         $ul.prepend($li);
       });
