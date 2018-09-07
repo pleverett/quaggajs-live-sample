@@ -356,8 +356,7 @@ $(function() {
       );
       $node.find('img').attr('src', canvas.toDataURL());
       var productName = '';
-      if (result.codeResult.format === 'WXY-wsu-8910')
-        productName = 'Cheerios, 19.3oz';
+      if (code === 'WXY-wsu-8910') productName = 'Cheerios, 19.3oz';
       $node.find('h4.code').html(code + ' ' + productName);
       $('#result_strip ul.thumbnails').prepend($node);
     }
